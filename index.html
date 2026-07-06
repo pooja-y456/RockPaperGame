@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color:rgb(22, 91, 160);
+            padding: 50px;
+        }
+        p { color:rgb(202, 10, 10); }
+        
+    
+        h1 { color:rgb(62, 152, 10); }
+        
+        .choices {
+            margin: 30px 0;
+        }
+        button {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color:rgba(244, 95, 120, 0.792);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: rgba(244, 95, 120, 0.792); }
+        .results {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            background:rgba(244, 95, 120, 0.792);;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        .score {
+            font-weight:bolder;
+            color:green;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PLAY GAME</h1>
+    <p>Select your move</p>
+
+    <div class="choices">
+        <button onclick="playGame('rock')">✊ Rock</button>
+        <button onclick="playGame('paper')">✋ Paper</button>
+        <button onclick="playGame('scissors')">✌️ Scissors</button>
+    </div>
+
+    <div class="results">
+        <div id="game-outcome">WINNER & SCORE</div>
+        <div class="score">
+            Player: <span id="player-score">0</span> | Computer: <span id="computer-score">0</span>
+        </div>
+    </div>
+
+    <script>
+        // Track the scores
+        let playerScore = 0;
+        let computerScore = 0;
+
+        // Array of choices for the computer
+        const choices = ['rock', 'paper', 'scissors'];
+
+        function getComputerChoice() {
+            // Generate a random index between 0 and 2
+            const randomIndex = Math.floor(Math.random() * 3);
+            return choices[randomIndex];
+        }
+
+        function determineWinner(player, computer) {
+            if (player === computer) {
+                return "It's a tie!";
+            }
+
+            if (
+                (player === 'rock' && computer === 'scissors') ||
+                (player === 'paper' && computer === 'rock') ||
+                (player === 'scissors' && computer === 'paper')
+            ) {
+                playerScore++;
+                return `You win! ${capitalize(player)} beats ${capitalize(computer) }.`;
+            } else {
+                computerScore++;
+                return `You lose! ${capitalize(computer)} beats ${capitalize(player)}.`;
+            }
+        }
+
+        function capitalize(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+
+        function playGame(playerChoice) {
+            const computerChoice = getComputerChoice();
+            const resultMessage = determineWinner(playerChoice, computerChoice);
+
+            // Update the DOM elements
+            // Example of setting a color dynamically based on the outcome
+let resultColor = resultMessage.includes("Win") ? "green" : "red";
+
+document.getElementById('game-outcome').innerHTML = `
+    <strong>You chose:</strong> ${capitalize(playerChoice)} <br>
+    <strong>Computer chose:</strong> ${capitalize(computerChoice)} <br><br>
+    <span style="color: ${resultColor}; font-weight: bold;">${resultMessage}</span>
+`;
+            
+            
+            document.getElementById('player-score').textContent = playerScore;
+            document.getElementById('computer-score').textContent = computerScore;
+        }
+    </script>
+</body>
+</html>
